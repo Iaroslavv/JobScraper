@@ -4,17 +4,6 @@ from datetime import date
 import csv
 
 
-def main(position, location):
-    url = f"https://ru.indeed.com/jobs?q={position}&l={location}"
-    return url
-
-
-url = main("python junior", "russia")
-response = requests.get(url)
-soup = BeautifulSoup(response.text, "html.parser")
-cards = soup.find_all("div", class_="jobsearch-SerpJobCard")
-
-
 def get_record(card):
     atag = card.h2.a
     job_title = atag.get("title")
@@ -33,7 +22,11 @@ def get_record(card):
     return record
 
 
-def get_records():
+def get_records(position, location):
+    url = f"https://ru.indeed.com/jobs?q={position}&l={location}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    cards = soup.find_all("div", class_="jobsearch-SerpJobCard")
     records = []
     for card in cards:
         record = get_record(card)
@@ -43,6 +36,7 @@ def get_records():
         write.writerow(["Job title", "Url", "Company", "Location",
                         "Summary", "Date post", "Date", "Salary"])
         write.writerows(records)
+    return records
 
 
 get_records()
