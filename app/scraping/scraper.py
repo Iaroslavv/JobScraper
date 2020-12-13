@@ -37,6 +37,3 @@ def get_records(position, location):
                         "Summary", "Date post", "Date", "Salary"])
         write.writerows(records)
     return records
-
-
-get_records()
