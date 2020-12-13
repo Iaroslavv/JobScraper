@@ -31,7 +31,7 @@ def get_records(position, location):
     for card in cards:
         record = get_record(card)
         records.append(record)
-    with open("jobs.csv", "w", newline="", encoding="utf-8") as f:
+    with open("jobs_indeed.csv", "w", newline="", encoding="utf-8") as f:
         write = csv.writer(f)
         write.writerow(["Job title", "Url", "Company", "Location",
                         "Summary", "Date post", "Date", "Salary"])
