@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, Blueprint, request
 from app.job_seeker.forms import FillInForm
-from app.scraping.scraper import get_records
+from app.scraping.scraper import Indeed
 import tablib
 
 
@@ -15,7 +15,7 @@ def index():
         if site == "Indeed.com":
             position = form.position.data
             location = form.location.data
-            get_records(position, location)
+            Indeed.get_records(position, location)
             return redirect(url_for("users.results"))
         else:
             print("NOT INDEED")
