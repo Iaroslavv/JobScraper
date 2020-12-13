@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, Blueprint, request
 from app.job_seeker.forms import FillInForm
 from app.scraping.scraper import get_records
-import csv
+import tablib
 
 
 users = Blueprint("users", __name__)
@@ -16,7 +16,6 @@ def index():
             position = form.position.data
             location = form.location.data
             get_records(position, location)
-            print("DONE!")
             return redirect(url_for("users.results"))
         else:
             print("NOT INDEED")
@@ -25,8 +24,8 @@ def index():
 
 @users.route("/results", methods=["GET"])
 def results():
-    with open("jobs_indeed.csv", "r", encoding="utf-8", newline="") as jobs_indeed:
-        read = csv.reader(jobs_indeed)
-        for row in read:
-            print(row)
-    return render_template("results.html")
+    dataset = tablib.Dataset()
+    with open('jobs_indeed.csv') as f:
+        dataset.csv = f.read()
+    data = dataset.html
+    return render_template("results.html", data=data)
