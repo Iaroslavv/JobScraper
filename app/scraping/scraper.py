@@ -3,8 +3,9 @@ from bs4 import BeautifulSoup
 from datetime import date
 import csv
 
+
 class Indeed:
-    """Extrts job's data from indeed."""
+    """Extracts job's data from indeed."""
 
     @staticmethod
     def get_record(card):
@@ -43,7 +44,8 @@ class Indeed:
 
 
 class StackOver:
-    
+    """Extracts job's data from stackoverflow."""
+
     @staticmethod
     def get_record(card):
         atag = card.h2.a
@@ -58,12 +60,11 @@ class StackOver:
             salary = " ".join(card.find("ul", "mt4").text.split()[5])
         except IndexError:
             salary = ""
-        
+
         record = (title, job_url, company_name, job_location,
                 tech_info, date_post, date_today, salary)
 
         return record
-
 
     @staticmethod
     def get_records(position, location):
