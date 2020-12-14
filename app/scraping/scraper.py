@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from datetime import date
 import csv
 
-
 class Indeed:
     """Extrts job's data from indeed."""
 
@@ -43,5 +42,19 @@ class Indeed:
         return records
 
 
-class GlasDoor:
-    pass
+
+def find_url(position, location):
+    url = f"https://stackoverflow.com/jobs?q={position}&l={location}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    cards = soup.find_all("div", class_="-job")
+    card = cards[0]
+    atag = card.h2.a
+    title = atag.get("title")
+    job_url = "https://ru.indeed.com/" + atag.get("href")
+    company_name = card.find("span", "").text.strip()
+    job_location = card.find("span", "fc-black-500").text.strip()
+    tech_info = card.find("div", "ps-relative")
+    technologies = tech_info.find("a", "post-tag").text
+    return technologies
+print(find_url("python junior", "europe"))
